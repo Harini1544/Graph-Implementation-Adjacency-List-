@@ -1,0 +1,68 @@
+from collections import defaultdict, deque
+
+class Graph:
+    def __init__(self):
+        self.graph = defaultdict(list)
+
+    def add_edge(self, u, v):
+        self.graph[u].append(v)
+        self.graph[v].append(u)  # Since it's an undirected graph
+
+    def dfs(self, start, visited=None):
+        if visited is None:
+            visited = set()
+        visited.add(start)
+        print(start, end=" ")
+
+        for neighbor in self.graph[start]:
+            if neighbor not in visited:
+                self.dfs(neighbor, visited)
+
+    def bfs(self, start):
+        visited = set()
+        queue = deque([start])
+        visited.add(start)
+
+        while queue:
+            node = queue.popleft()
+            print(node, end=" ")
+
+            for neighbor in self.graph[node]:
+                if neighbor not in visited:
+                    queue.append(neighbor)
+                    visited.add(neighbor)
+
+
+def main():
+    g = Graph()
+    while True:
+        print("\n1. Add Edge")
+        print("2. DFS Traversal")
+        print("3. BFS Traversal")
+        print("4. Exit")
+
+        choice = input("Choose an option: ")
+
+        if choice == '1':
+            u = int(input("Enter the first vertex: "))
+            v = int(input("Enter the second vertex: "))
+            g.add_edge(u, v)
+            print(f"Edge ({u}, {v}) added.")
+        elif choice == '2':
+            start = int(input("Enter the start vertex for DFS: "))
+            print("DFS Traversal: ", end="")
+            g.dfs(start)
+            print()
+        elif choice == '3':
+            start = int(input("Enter the start vertex for BFS: "))
+            print("BFS Traversal: ", end="")
+            g.bfs(start)
+            print()
+        elif choice == '4':
+            break
+        else:
+            print("Invalid choice.")
+
+
+if __name__ == "__main__":
+    main()
